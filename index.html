@@ -116,16 +116,11 @@
         </div>
     </header>
 
-    <div class="post-content"><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>以往我们在移动端做调试的时候，总是喜欢调试手机和当前电脑联入同一个局域网，然后通过 <code>if config</code> 找到当前 ip， 然后在当前手机中将 <code>localhost</code> 替换成找到的 ip 地址就行了。<br>但是今天我在做移动端调试的时候发现一个问题，无论我怎么样都不能让调试手机进入到当前 react 项目进行调试，包括拍拍重启换一台等方法。为此我探索了各种方法，终于找到了解决方案。</p>
-<h2 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h2><h3 id="寻找正确的调试工具"><a href="#寻找正确的调试工具" class="headerlink" title="寻找正确的调试工具"></a>寻找正确的调试工具</h3><p>当我按照以往的方法做移动端调试的时候(因为自用的是 iOS 系统， 所以主要还是用 iOS 做测试)。通过 ip 地址进入时，一直展示是白屏，但是可以看到 react 项目的 logo, 初步判断是由于系统报错的问题，但是很诡异的是在 PC 端可以正常打开，在 Android 上也可以，在 iOS 手机端却不行，这就很神奇了。我首先想到的是移动端浏览器的问题， 然后换了 Safari 浏览器，同样还是白屏。最后锁定了有可能是 iOS 系统的问题。遇到这种办法，我首先想到的是应该想办法做移动端的调试，能看到报错信息就好了。然后我在网上找各种调试工具，包括探索 <code>Ngrok</code> 等方式，可以看以下这篇 blog:</p>
-<p><a href="https://medium.com/@sumn2u/debugging-react-applications-in-mobile-devices-39b584ff3eea" target="_blank" rel="noopener">Debugging React applications in Mobile Devices</a></p>
-<p>通过调试工具的探索，我最后锁定了以下调试方法：</p>
-<p><a href="https://www.zhihu.com/question/37361845" target="_blank" rel="noopener">如何用手机测试自己写的 web 页面？</a></p>
-<p>通过 Safari 浏览器打开了报错的控制台然后看到了报错信息（在连接 Safari 浏览器进行调试的时候也会遇到很多系统的连接问题，不过重启可以解决大部分问题，如果一直配置不上，可以试试重启）</p>
-<h3 id="查看具体报错信息"><a href="#查看具体报错信息" class="headerlink" title="查看具体报错信息"></a>查看具体报错信息</h3><p>费劲千辛万苦，终于看到了报错信息，发现我在加载的时候在 Safari 浏览器的控制台弹出以下报错信息： <code>Invalid regular expression: invalid group specifier name</code>，网上关于此报错信息的解释有各种解释，但究其原因其实只有一种，就是当前浏览器不知道这样的表达式，我再继续查阅资料发现，这是因为当前的 IOS 系统不支持 <code>零宽断言</code> , 能够查看到具体的报错信息之后，我启动当前 react 项目的 dev 模式，成功 debug 到具体报错的那一行，然后将 零宽断言的正则表达式修改之后，项目就能够成功的在 iOS 移动端跑起来了。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>每次遇到莫名其妙的问题的时候，我的第一反应可能是低级错误，比如语法错误，或者字打错了，这样能解决掉大部分问题。但是每当遇到找不到问题的解决方案时，可以试试换个思路，做一些 AB Test，将无关的因素排除掉，直到最终锁定问题。</p>
-
-        </div></article>
+    <div class="post-content"><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>以往我们在移动端做调试的时候，总是喜欢调试手机和当前电脑联入同一个局域网，然后通过 <code>if config</code> 找到当前 ip， 然后在当前手机中将 <code>localhost</code> 替换成找到的 ip 地址就行了。<br>但是今天我在做移动端调试的时候发现一个问题，无论我怎么样都不能让调试手机进入到当前 react 项目进行调试，包括拍拍重启换一台等方法。为此我探索了各种方法，终于找到了解决方案。<br>
+          <div class="read-more">
+            <a href="/2020/11/16/ios-移动端调试-react-项目的探索/" class="read-more-link">阅读更多</a>
+          </div>
+        </p></div></article>
       <article class="post">
     <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/03/30/如何根据canvas画框/">如何使用canvas根据坐标画框</a>
