@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="如何使用canvas根据坐标画框"><meta name="keywords" content="canvas react, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2020/03/30/如何根据canvas画框/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>如何使用canvas根据坐标画框 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">如何使用canvas根据坐标画框
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-03-30
+        </span><span class="post-visits" data-url="/2020/03/30/如何根据canvas画框/" data-title="如何使用canvas根据坐标画框">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#准备"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始画框"><span class="toc-text">开始画框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在搞点机器学习相关的内容，大致是上传一个图片，然后机器识别特殊部分，通过返回的坐标，在图片上画框。<br>一说到画框这种东西，不用说肯定是使用 canvas 来画了，但是如何利用坐标来画正确的框，这其中就有一些坑要踩了。<br>下面容我来讲解一下在 react 中如果通过坐标来使用 canvas 画框。</p>
+<a id="more"></a>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>首先后端返回的是一个数组，每个 object 包含的是每个点的位置，表示经过机器识别之后的需要画框的位置。<br>类似于下面这种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123; x: 0.7, y: 0.6 &#125;,</span><br><span class="line">  &#123; x: 0.9, y: 0.8 &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>写到这里，有人肯定问我，画框不是需要四个点吗，这才两个点，简直在逗我。<br>其实事情不是这样的，这两个点是对角线点，只要确定了对角线的点，就能画框了，你可以细想一下看看是不是这么回事。</p>
+<p>所以我们准备好了后端的 API 返回的数据结构，就可以准备解构数据并且利用画框了。</p>
+<h2 id="开始画框"><a href="#开始画框" class="headerlink" title="开始画框"></a>开始画框</h2><p>这里我们准备开始编写组件的渲染元素：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">  &lt;canvas width=&#123;300&#125; height=&#123;300&#125; /&gt;</span><br><span class="line">  &lt;img src=&#123;Img&#125; style=&#123;&#123; display: &quot;none&quot; &#125;&#125; /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这里我们在 canvas 之后设定了一个 img 元素，然后设定它 display 为 none, 目的是在图片加载完成之后再绘制 canvas，这里我们分别为 canvas 和 img 加上 ref，以便获取其真实 dom 的宽高，下面我们开始在组件加载完成之后（componentDidMount）绘制长方框。</p>
+<p>这里先贴出代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const canvas = this.refs.canvas;</span><br><span class="line">const ctx = canvas.getContext(&quot;2d&quot;);</span><br><span class="line">const img = this.refs.image;</span><br><span class="line">img.onload = () =&gt; &#123;</span><br><span class="line">  const scale = img.width / 300;</span><br><span class="line">  const scaledHeight = img.height / scale;</span><br><span class="line">  ctx.drawImage(img, 0, 0, 300, scaledHeight);</span><br><span class="line">  this.boundingBox.map((&#123; normalizedVertices &#125;) =&gt; &#123;</span><br><span class="line">    const firstPoint = &#123;</span><br><span class="line">      x: normalizedVertices[0].x * 300,</span><br><span class="line">      y: normalizedVertices[0].y * scaledHeight</span><br><span class="line">    &#125;;</span><br><span class="line">    const rectSize = &#123;</span><br><span class="line">      w: normalizedVertices[1].x * 300 - normalizedVertices[0].x * 300,</span><br><span class="line">      h: normalizedVertices[1].y * scaledHeight - normalizedVertices[0].y * scaledHeight</span><br><span class="line">    &#125;;</span><br><span class="line">    ctx.strokeStyle = &quot;red&quot;;</span><br><span class="line">    ctx.rect(firstPoint.x, firstPoint.y, rectSize.w, rectSize.h);</span><br><span class="line">    ctx.stroke();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前两行获取到 canvas 元素的真实引用，然后在 img onload 的方法中进行画框，首先我们需要考虑到的是图片本身也是有宽高的，比如图片高宽为 500 <em> 400， 而我们的 canvas 画布宽为 300 </em> 200， 所以我们要确定合适的宽高比例，后端的坐标也是根据原始的图片进行计算返回的坐标，所以如果我们如果不对图片缩放比例进行计算，就会出现画框不正确，没有画到正确的位置。</p>
+<p>所以 scale 变量表示当前图片的对应于 canvas 画布（宽 300 高 200）所需要的缩放比例，然后再用原始图片的高度除以缩放比例得到经过缩放之后图片在 canvas 画布上的高。</p>
+<p>再调用 canvas 的 drawImage API 将缩放后的图片画到 canvas 上。<br>图片已经绘制在 canvas 上了，并且保持了正确的缩放比例，下面可以开始画框了。</p>
+<p>遍历 boundingBox 取出每一个点的位置， 然后绘制第一个点的位置，因为 x 和 y 是 0 ～ 1 的数值，表示在原始图片的位置点，所以我们分别乘以当前图片在画布的宽高，就可以得到第一个点的位置，然后再通过第二个点的位置减去第一个点的得到长方形的宽高，还是我们在最开始的时候说的，两个对角点确定一个框。</p>
+<p>最后定义 strokeStyle 为 red， 这样比较显眼， 然后调用 canvas 的 API rect 进行画框，最后调用 stroke 绘制.</p>
+<p>这样我们就可以画出正确的框了。成品如下：</p>
+<p><img src="/img/draw-rect.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>网上有很多类似的处理 canvas 的包，但最后经过调研发现都被深度封装过，对很多场景不是很适用，所以只好调用原始的 canvs 在 react 中绘制，这个问题最 tricky 的地方就是如何确定图片缩放比例的问题，我前期也是踩了很多坑才正确绘制成功。别看最后核心思想就十几行代码，但实际操作起来还是很打脑壳的。hhhh</p>
+<p>下面附上完整组件的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">import React from &quot;react&quot;;</span><br><span class="line">import Img from &quot;./group.png&quot;;</span><br><span class="line"></span><br><span class="line">class DrawRect extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.boundingBox = this.props.boundingBox || [];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line">    const canvas = this.refs.canvas;</span><br><span class="line">    const ctx = canvas.getContext(&quot;2d&quot;);</span><br><span class="line">    const img = this.refs.image;</span><br><span class="line">    img.onload = () =&gt; &#123;</span><br><span class="line">      const scale = img.width / 300;</span><br><span class="line">      const imgHei = img.height / scale;</span><br><span class="line">      ctx.drawImage(img, 0, 0, 300, imgHei);</span><br><span class="line">      this.boundingBox.map((&#123; normalizedVertices &#125;) =&gt; &#123;</span><br><span class="line">        const firstPoint = &#123;</span><br><span class="line">          x: normalizedVertices[0].x * 300,</span><br><span class="line">          y: normalizedVertices[0].y * imgHei</span><br><span class="line">        &#125;;</span><br><span class="line">        const rectSize = &#123;</span><br><span class="line">          w: normalizedVertices[1].x * 300 - normalizedVertices[0].x * 300,</span><br><span class="line">          h: normalizedVertices[1].y * imgHei - normalizedVertices[0].y * imgHei</span><br><span class="line">        &#125;;</span><br><span class="line">        ctx.strokeStyle = &quot;red&quot;;</span><br><span class="line">        ctx.rect(firstPoint.x, firstPoint.y, rectSize.w, rectSize.h);</span><br><span class="line">        ctx.stroke();</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;canvas ref=&quot;canvas&quot; width=&#123;300&#125; height=&#123;200&#125; /&gt;</span><br><span class="line">        &lt;img ref=&quot;image&quot; src=&#123;Img&#125; style=&#123;&#123; display: &quot;none&quot; &#125;&#125; /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">export default DrawRect;</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/canvas-react/">canvas react</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/11/16/ios-移动端调试-react-项目的探索/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">ios-移动端调试-react-项目的探索</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/11/19/为什么-react-中-p-元素不能嵌套-div-元素/">
+        <span class="next-text nav-default">为什么 react 中 p 元素不能嵌套 div 元素</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2020/03/30/如何根据canvas画框/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

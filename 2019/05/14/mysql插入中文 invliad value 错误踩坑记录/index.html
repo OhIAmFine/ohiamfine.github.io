@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="mysql插入中文 invliad value 错误踩坑记录"><meta name="keywords" content="mysql, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/05/14/mysql插入中文 invliad value 错误踩坑记录/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>mysql插入中文 invliad value 错误踩坑记录 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">mysql插入中文 invliad value 错误踩坑记录
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-05-14
+        </span><span class="post-visits" data-url="/2019/05/14/mysql插入中文 invliad value 错误踩坑记录/" data-title="mysql插入中文 invliad value 错误踩坑记录">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景："><span class="toc-text">背景：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>在部署线上服务时，考虑到线上数据的安全性，所以在测试时我们拟定先在本地启动一个测试环境来模拟线上数据库操作。自然而然我们需要先在本地启动一个 mysql 的 docker image，然后我在连接到本地 mysql 并插入中文到特定的表时， mysql 很惊异的发出了错误信息：</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[HY000][1366] Incorrect string value: &apos;\xE4\xB8\xAD\xE5\x9B\xBD&apos; for column &apos;region&apos; at row 1</span><br></pre></td></tr></table></figure>
+<p>这个错误在网上 google 的信息一大堆，但我在尝试了半天之后并没有发现可用的结果，总结起来网上的解决方案无非就是三种：</p>
+<ul>
+<li>进入到 mysql 的安装目录，修改配置文件的编码，并重启服务</li>
+<li>在写入 sql 时加上前缀 <code>SET NAMES &#39;utf8&#39;;SET CHARACTER SET utf8;</code>的方法</li>
+<li>在连接 mysql 时加上 <code>utf-8</code> 编码方式</li>
+</ul>
+<p>但我经过尝试之后，都没有成功的解决问题，归根结底这就是一个字符编码的问题，<br>所以我使用了下面的命令来查询我本地的 mysql 表的编码方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show full columns from your_table_name</span><br></pre></td></tr></table></figure>
+<p>得到显示的结果：<br><img src="/img/mysql-value.png" alt></p>
+<p>可以看到 mysql 对我的表使用的是 <code>latin1_swedish_ci</code> 编码方式，而这种的编码方式只能存储一个字节的内容，我们的中文当然不能存下。<br>而至于为什么 mysql 使用<code>latin1_swedish_ci</code> 作为默认的编码方式，可以看 stackoverflow 的这片问答： <a href="https://stackoverflow.com/questions/3936059/why-does-mysql-use-latin1-swedish-ci-as-the-default" target="_blank" rel="noopener">Why does MySQL use latin1_swedish_ci as the default?</a> </p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>所以最后的解决方案为，修改 table 的编码方式为 <code>utf8</code>， 这样就可以插入中文了。<br>我们使用下面的两条命令来修改当前 mysql 的编码方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER DATABASE your_db_name DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</span><br><span class="line">ALTER TABLE your_db_table CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;</span><br></pre></td></tr></table></figure></p>
+<p>可以参考 stackoverflow 上的这篇文章：<a href="https://stackoverflow.com/questions/5138697/convert-mysql-latin1-swedish-ci-to-utf8-bin" target="_blank" rel="noopener">convert-mysql-latin1-swedish-ci-to-utf8-bin</a> </p>
+<p>然后查看当前的编码方式：<br><img src="/img/mysql-utf8.png" alt></p>
+<p>显示当前的字符已经成功转为需要的格式，就可以正式插入中文了。<br>done!</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/mysql/">mysql</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2019/05/21/nodejs中并行和串行的理解/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">nodejs中并行和串行的理解</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/05/09/export-default和export的区别/">
+        <span class="next-text nav-default">export default和Export的区别</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/05/14/mysql插入中文 invliad value 错误踩坑记录/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

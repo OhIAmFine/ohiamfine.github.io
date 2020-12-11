@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="为什么 react 中 p 元素不能嵌套 div 元素"><meta name="keywords" content="react html, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/11/19/为什么-react-中-p-元素不能嵌套-div-元素/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>为什么 react 中 p 元素不能嵌套 div 元素 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">为什么 react 中 p 元素不能嵌套 div 元素
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-11-19
+        </span><span class="post-visits" data-url="/2019/11/19/为什么-react-中-p-元素不能嵌套-div-元素/" data-title="为什么 react 中 p 元素不能嵌套 div 元素">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>今天在写一个 react + material ui 的前端项目时，遇到一个组件报错问题，下面是报错图片：<br><img src="/img/DOMNesting-error.png" alt></p>
+<p>查找元素发现，使用的 <code>&lt;Typography&gt;</code> 组件在不特别指明要渲染的元素前，会默认渲染成 p 元素，如果在组件里面嵌套了 <code>div</code> ，渲染出的就是 <code>p</code> 元素嵌套了 <code>div</code>. 这时 react 就会报出错误，但是为什么 react 不允许 <code>p</code> 元素嵌套 <code>div</code> 呢，这里有同学可能会说是因为 <code>p</code> 元素可能不是块元素吧，行元素里不能嵌套块元素，但事实上 <code>p</code> 元素也是块元素，行元素不能嵌套块元素只是规范定义，建议我们不这样用，因为会有 SEO 之类的问题，但是实际上用浏览器不会报错的，比如我用 <code>span</code> 尝试嵌套 <code>div</code> 都不会报错，于是，我查询了文档。<br>终于得到了答案。</p>
+<p><img src="/img/p-div.png" alt></p>
+<a id="more"></a>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>之所以会出现这个情况，是因为 <code>p</code> 元素的特殊性，它有”标签忽略的特性“我们先来看<a href="https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element" target="_blank" rel="noopener">官方文档的解释</a>：<br><img src="/img/p-ele.png" alt></p>
+<p>意思就是，如果 <code>p</code> 标签之后如果紧跟 <code>address, article, aside, blockquote, details, div, dl, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, menu, nav, ol, p, pre, section, table, or ul</code>等元素或者其 parent 元素中没有更多内容，并且 parent 元素是既不是 <code>a, audio, del, ins, map, noscript, or video</code> 元素，也不是一个自定义的元素的 HTML 元素就可以省略 <code>p</code> 的结束标签。</p>
+<p>总结来说如果我们在 DOM 树中的 <code>p</code> 元素之中嵌套了 <code>div</code> 元素，并且 <code>p</code> 元素后面还有块元素之类的，<code>p</code> 元素嵌套的 <code>div</code> 元素就会渲染出两个元素。我们通过下图，举个例子来说，因为第一个 <code>&lt;p&gt;</code> 标签之后紧跟了一个 <code>&lt;div&gt;</code> 标签，其就可以省略闭合标签，而浏览器解析到真正的 <code>p</code> 元素的闭合标签 <code>&lt;/p&gt;</code> ，发现它没有开始标签（前面的开始标签已经自动加上了闭合标签），于是就给他加了一个开始标签：<code>&lt;/p&gt;</code>于是我们开始说的 <code>p</code> 元素嵌套 <code>div</code> 元素就渲染成了两个元素，会多出一个空的 <code>p</code> 元素：<br><img src="/img/p-example.png" alt></p>
+<p>最终渲染的代码就是这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;p&gt;Test1</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">  &lt;div&gt;Test2&lt;/div&gt;</span><br><span class="line">  &lt;p&gt;&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>于是，react 为了防止意外发生，限制了 <code>p</code> 元素不能嵌套 <code>div</code> 等块级元素，就会出现我们开始所说的报错。<br>我们可以在 stackoverflow 上看到很多解答，都是类似的问题。</p>
+<p><a href="https://stackoverflow.com/questions/10763780/putting-div-inside-p-is-adding-an-extra-p" target="_blank" rel="noopener">Putting \&lt;div> inside \&lt;p> is adding an extra \&lt;p> [duplicate]</a></p>
+<p><a href="https://github.com/facebook/create-react-app/issues/249" target="_blank" rel="noopener">Putting \&lt;div> inside \&lt;p> is adding an extra \&lt;p> [duplicate]</a></p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/react-html/">react html</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/03/30/如何根据canvas画框/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">如何使用canvas根据坐标画框</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/07/31/深入理解call方法的实现原理/">
+        <span class="next-text nav-default">深入理解call方法的实现原理</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/11/19/为什么-react-中-p-元素不能嵌套-div-元素/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

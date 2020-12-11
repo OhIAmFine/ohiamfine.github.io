@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="andorid键盘弹起影响 fixed 布局的方案探索"><meta name="keywords" content="HTML5 mobile andorid, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/07/02/andorid键盘弹起遮挡input表单问题的临时解决/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>andorid键盘弹起影响 fixed 布局的方案探索 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">andorid键盘弹起影响 fixed 布局的方案探索
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-07-02
+        </span><span class="post-visits" data-url="/2019/07/02/andorid键盘弹起遮挡input表单问题的临时解决/" data-title="andorid键盘弹起影响 fixed 布局的方案探索">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案的探索"><span class="toc-text">解决方案的探索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案的初体验"><span class="toc-text">解决方案的初体验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最终方案的诞生"><span class="toc-text">最终方案的诞生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考"><span class="toc-text">思考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>最近接到一个需求，其中一个功能点就是在一个 input 中输入表单内容，要求输入字段并展示搜索到的内容。本来是一个简单的需求，可是在跨平台开发的时候在 andorid 上却因为 andorid 键盘弹出影响了页面布局，导致最下面 fixed 布局的 footer 顶到了键盘上方，遮挡了 input 输入栏。</p>
+<a id="more"></a>
+<p>这种问题只出现在 android 上，因为 android 键盘弹出的时候会改变 H5 页面的视口大小，浏览器一旦发现视口变小（即高度减小），便会使 fixed 定位的 footer 往上移，直到 footer 在页面的最底部，而一旦 footer 顶上来了，就会遮挡住 input 输入栏，严重影响了用户体验。<br>这样的问题在 iOS 上不会发生，因为 iOS 上键盘弹起是属于不同的层级，不会影响页面布局。</p>
+<p>大概在 andorid 上就是这样：<br><img src="/img/andorid-keybord.png" alt></p>
+<h3 id="解决方案的探索"><a href="#解决方案的探索" class="headerlink" title="解决方案的探索"></a>解决方案的探索</h3><p>我们去网上搜索答案，发现很多人都遇到这种问题，汇总起来问题免不了解决方案大致分为以下几种：</p>
+<ul>
+<li>不要用 fixed 定位来定位 footer，利用相对定位并使用 css 的 cal 方法计算 footer 的位置</li>
+<li>利用 JavaScript 来操作 body 的高度，增加滚动条</li>
+<li>键盘弹起时，隐藏 footer。</li>
+<li>使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView" target="_blank" rel="noopener">scrollIntoView</a> 方法，将 input 滚动到视口中</li>
+</ul>
+<p><img src="/img/andorid-html5.png" alt="img"></p>
+<h3 id="解决方案的初体验"><a href="#解决方案的初体验" class="headerlink" title="解决方案的初体验"></a>解决方案的初体验</h3><p>通过搜索网上的解决方案并结合当前项目产品设计背景，发现既有方案都不适合我。<br>第一个方案 pass，因为当前的 body 是随着内容的不断增加高度不断增加的，而 footer 的要求只是要固定在视口的最下方，也就是说高度是不定的，但最小高度为 100vh（body: min-height: 100vh）。<br>第二个方案 pass too，高度是不定的，同样不能利用 JavaScript 设置 body 高度。<br>第三个方案 pass，第三个方案咋看还不错，但是我的页面不能判断键盘的弹起与否，只能通过 input 是否处于 focus 状态来调用 onFocus 事件来处理，但是一旦点击键盘上的收下按钮，input 同样处于 focus 状态，但是 footer 已经隐藏了，影响了体验，pass。<br>第四个方案，使用了但是无效。很难受。</p>
+<h3 id="最终方案的诞生"><a href="#最终方案的诞生" class="headerlink" title="最终方案的诞生"></a>最终方案的诞生</h3><p>最终这个问题几经辗转，在和产品经理斡旋了三天三夜之后，产生了最终的解决方案，大概意思就是在 window 上绑定一个 resize 事件， 一旦 resize 事件发生之后，便将当前的 scrollTop 高度调整为总高度的 二分之一（input处于屏幕中间位置），这样 input 不仅可以完全展示在页面顶部，而且刚也不会被遮挡。<br>同理，在 iOS 中键盘弹起不会影响 window 触发 resize 事件，真可谓是完美解决方案。</p>
+<p>页面为 React 编写，代码为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()=&gt; &#123;</span><br><span class="line">    // 实现所有浏览器的滚动高度为视口高度的一半</span><br><span class="line">    window.addEventListener(&quot;resize&quot;, () =&gt; &#123;</span><br><span class="line">      window.pageYOffset = window.innerHeight / 2;</span><br><span class="line">      document.documentElement.scrollTop = window.innerHeight / 2;</span><br><span class="line">      document.body.scrollTop = window.innerHeight / 2;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
+<p>说明：<br>因为设置当前页面滚动高度存在兼容性问题，所以采用了三种方式设置滚动高度，具体可以看 stackoverflow 上的解释：<br><a href="https://stackoverflow.com/questions/28633221/document-body-scrolltop-firefox-returns-0-only-js" target="_blank" rel="noopener">document.body.scrollTop Firefox returns 0 : ONLY JS</a></p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>因为在 react useEffect hooks 中添加了 resize 事件，所以用户不断 resize 视口，可能会导致性能问题，所以我们需要在渲染 html 中的 head 标签部分添加禁止用户缩放等 resize 事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>这样的话整个项目只有在 input 中存在一个可以改变视口高度的位置，同时为了性能考虑可以考虑添加 <code>节流或防抖</code> 等功能。<br>done!</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/HTML5-mobile-andorid/">HTML5 mobile andorid</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2019/07/04/hexo博客主题noise如何配置gitment评论功能/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">hexo博客主题noise如何配置gitment评论功能</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/06/27/如何使用ssh同时连接github和gitlab/">
+        <span class="next-text nav-default">如何使用ssh同时连接github和gitlab</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/07/02/andorid键盘弹起遮挡input表单问题的临时解决/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

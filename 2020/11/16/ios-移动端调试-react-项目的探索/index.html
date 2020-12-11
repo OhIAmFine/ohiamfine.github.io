@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="ios-移动端调试-react-项目的探索"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2020/11/16/ios-移动端调试-react-项目的探索/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>ios-移动端调试-react-项目的探索 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">ios-移动端调试-react-项目的探索
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-11-16
+        </span><span class="post-visits" data-url="/2020/11/16/ios-移动端调试-react-项目的探索/" data-title="ios-移动端调试-react-项目的探索">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#起因"><span class="toc-text">起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#探索"><span class="toc-text">探索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找正确的调试工具"><span class="toc-text">寻找正确的调试工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看具体报错信息"><span class="toc-text">查看具体报错信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>以往我们在移动端做调试的时候，总是喜欢调试手机和当前电脑联入同一个局域网，然后通过 <code>if config</code> 找到当前 ip， 然后在当前手机中将 <code>localhost</code> 替换成找到的 ip 地址就行了。<br>但是今天我在做移动端调试的时候发现一个问题，无论我怎么样都不能让调试手机进入到当前 react 项目进行调试，包括拍拍重启换一台等方法。为此我探索了各种方法，终于找到了解决方案。</p>
+<h2 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h2><h3 id="寻找正确的调试工具"><a href="#寻找正确的调试工具" class="headerlink" title="寻找正确的调试工具"></a>寻找正确的调试工具</h3><p>当我按照以往的方法做移动端调试的时候(因为自用的是 iOS 系统， 所以主要还是用 iOS 做测试)。通过 ip 地址进入时，一直展示是白屏，但是可以看到 react 项目的 logo, 初步判断是由于系统报错的问题，但是很诡异的是在 PC 端可以正常打开，在 Android 上也可以，在 iOS 手机端却不行，这就很神奇了。我首先想到的是移动端浏览器的问题， 然后换了 Safari 浏览器，同样还是白屏。最后锁定了有可能是 iOS 系统的问题。遇到这种办法，我首先想到的是应该想办法做移动端的调试，能看到报错信息就好了。然后我在网上找各种调试工具，包括探索 <code>Ngrok</code> 等方式，可以看以下这篇 blog:</p>
+<p><a href="https://medium.com/@sumn2u/debugging-react-applications-in-mobile-devices-39b584ff3eea" target="_blank" rel="noopener">Debugging React applications in Mobile Devices</a></p>
+<p>通过调试工具的探索，我最后锁定了以下调试方法：</p>
+<p><a href="https://www.zhihu.com/question/37361845" target="_blank" rel="noopener">如何用手机测试自己写的 web 页面？</a></p>
+<p>通过 Safari 浏览器打开了报错的控制台然后看到了报错信息（在连接 Safari 浏览器进行调试的时候也会遇到很多系统的连接问题，不过重启可以解决大部分问题，如果一直配置不上，可以试试重启）</p>
+<h3 id="查看具体报错信息"><a href="#查看具体报错信息" class="headerlink" title="查看具体报错信息"></a>查看具体报错信息</h3><p>费劲千辛万苦，终于看到了报错信息，发现我在加载的时候在 Safari 浏览器的控制台弹出以下报错信息： <code>Invalid regular expression: invalid group specifier name</code>，网上关于此报错信息的解释有各种解释，但究其原因其实只有一种，就是当前浏览器不知道这样的表达式，我再继续查阅资料发现，这是因为当前的 IOS 系统不支持 <code>零宽断言</code> , 能够查看到具体的报错信息之后，我启动当前 react 项目的 dev 模式，成功 debug 到具体报错的那一行，然后将 零宽断言的正则表达式修改之后，项目就能够成功的在 iOS 移动端跑起来了。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>每次遇到莫名其妙的问题的时候，我的第一反应可能是低级错误，比如语法错误，或者字打错了，这样能解决掉大部分问题。但是每当遇到找不到问题的解决方案时，可以试试换个思路，做一些 AB Test，将无关的因素排除掉，直到最终锁定问题。</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="next" href="/2020/03/30/如何根据canvas画框/">
+        <span class="next-text nav-default">如何使用canvas根据坐标画框</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2020/11/16/ios-移动端调试-react-项目的探索/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

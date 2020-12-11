@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="学习记录踩坑日记"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/page/2/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><section id="posts" class="posts"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/05/21/nodejs中并行和串行的理解/">nodejs中并行和串行的理解</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-05-21
+        </span><span class="post-visits" data-url="/2019/05/21/nodejs中并行和串行的理解/" data-title="nodejs中并行和串行的理解">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>最近接到一个 job， 意思大概是对阿里云的 RDS 数据库上的 ip 数据（大概 300w 条）进行处理，并存到一个新的 table 中。<br>任务相对不难，但是转换并存到的数据库中的速度为 1 row/second，奇慢无比，经过同事的指导，重构之后成功的将速度提升到 50 rows/second（达到所调用的api极限）。<br>究其原因就是nodejs中的并行和串行的差异，充分利用了 cpu 之后显著的提升了速度。</p>
+          <div class="read-more">
+            <a href="/2019/05/21/nodejs中并行和串行的理解/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/05/14/mysql插入中文 invliad value 错误踩坑记录/">mysql插入中文 invliad value 错误踩坑记录</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-05-14
+        </span><span class="post-visits" data-url="/2019/05/14/mysql插入中文 invliad value 错误踩坑记录/" data-title="mysql插入中文 invliad value 错误踩坑记录">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>在部署线上服务时，考虑到线上数据的安全性，所以在测试时我们拟定先在本地启动一个测试环境来模拟线上数据库操作。自然而然我们需要先在本地启动一个 mysql 的 docker image，然后我在连接到本地 mysql 并插入中文到特定的表时， mysql 很惊异的发出了错误信息：</p>
+          <div class="read-more">
+            <a href="/2019/05/14/mysql插入中文 invliad value 错误踩坑记录/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/05/09/export-default和export的区别/">export default和Export的区别</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-05-09
+        </span><span class="post-visits" data-url="/2019/05/09/export-default和export的区别/" data-title="export default和Export的区别">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>最近在项目中遇到一个坑，就是用 export default 导出一个函数时，怎么都获取不到那个函数，纠结了半天，原来是自己对 export default的理解出了错。</p>
+          <div class="read-more">
+            <a href="/2019/05/09/export-default和export的区别/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/04/30/线上前端部署服务踩坑记录/">线上前端部署服务踩坑记录</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-30
+        </span><span class="post-visits" data-url="/2019/04/30/线上前端部署服务踩坑记录/" data-title="线上前端部署服务踩坑记录">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近接到需求，要求在原有同学的开发基础上，开发上线一系列新功能，其中用到的技术栈主要是 dva + umi.js + antd + roadhog。在开发完成项目之后，部署上线的流程遇到了许多坑，让人收益颇深。</p>
+          <div class="read-more">
+            <a href="/2019/04/30/线上前端部署服务踩坑记录/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/04/20/实现react组件上传到阿里云OSS踩坑记录/">实现react组件上传到阿里云OSS踩坑记录</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-20
+        </span><span class="post-visits" data-url="/2019/04/20/实现react组件上传到阿里云OSS踩坑记录/" data-title="实现react组件上传到阿里云OSS踩坑记录">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>最近接到需求，要求用户在浏览器前端点击上传button，实现图片或者视频的上传，并在button旁边设置预览功能。</p>
+<p>图片或者文件这类文件资源需要上传到阿里云的OSS对象存储系统，在这里记录一下踩坑过程。</p>
+          <div class="read-more">
+            <a href="/2019/04/20/实现react组件上传到阿里云OSS踩坑记录/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/04/12/获取二叉树的最大深度/">获取二叉树的最大深度</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-12
+        </span><span class="post-visits" data-url="/2019/04/12/获取二叉树的最大深度/" data-title="获取二叉树的最大深度">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>获取二叉树的最大深度思路：<br>最好的方法是通过遍历来解决，后续可以改版为通过<code>while</code>循环来解决遍历容易引起的内存泄漏。</p>
+          <div class="read-more">
+            <a href="/2019/04/12/获取二叉树的最大深度/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/04/10/关于移动端像素的思考/">关于移动端像素的思考</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-10
+        </span><span class="post-visits" data-url="/2019/04/10/关于移动端像素的思考/" data-title="关于移动端像素的思考">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>今天在学习 RN（react native）时，突然想到一个关于像素的例子，正好以前也了解过像素密度等知识，突然和 RN 的例子结合起来时又想不通具体的场景了，所以决定总结一下相关的知识点。</p>
+          <div class="read-more">
+            <a href="/2019/04/10/关于移动端像素的思考/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2019/03/24/docker-run-命令详解/">docker run 命令详解</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-24
+        </span><span class="post-visits" data-url="/2019/03/24/docker-run-命令详解/" data-title="docker run 命令详解">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p>在使用 <code>docker run</code> 命令时有很多额外的参数需要注意，使用好这些参赛，可以更好的部署自己的服务</p>
+          <div class="read-more">
+            <a href="/2019/03/24/docker-run-命令详解/" class="read-more-link">阅读更多</a>
+          </div>
+        </div></article>
+      <nav class="pagination"><a class="prev" href="/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    </nav></section></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

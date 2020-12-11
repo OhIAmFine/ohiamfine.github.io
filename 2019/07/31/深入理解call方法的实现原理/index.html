@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="深入理解call方法的实现原理"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/07/31/深入理解call方法的实现原理/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>深入理解call方法的实现原理 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">深入理解call方法的实现原理
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-07-31
+        </span><span class="post-visits" data-url="/2019/07/31/深入理解call方法的实现原理/" data-title="深入理解call方法的实现原理">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现"><span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考"><span class="toc-text">思考</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>今天浏览网站时看到一个问题，<code>如何手动实现一个 call 方法？</code>，看了下源码，似懂非懂的理解了一下，心中不免大呼，就这几行难道就是 javascript 中大名鼎鼎的 call 方法，这也太简单了吧。<br>敷衍了事之后，关闭了网站，继续在 🕸️⬆️ 开始了 🏄‍。<br>可是下来回味的时候，想自己手写一遍，才猛然发现，似懂非懂的真正含义其实是不懂。<br>又看了一下原理，才发现自己真的有点不明白。<br>于是我自己在本地跑了一个程序，仔仔细细的把每一个点 debug 完才发现，掌握完知识的感觉是多么的奇妙。</p>
+<a id="more"></a>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>好，那么我们现在开始进入正题，先揭开谜题，<code>如何手动实现一个 call 方法？</code>，这个方法的每一行代码如果你都能理解什么意思的话，那请您别看了，您比我 🐂🍺 ，<code>ctrl + w</code> or <code>command + w</code> 继续开始您的 🕸️⬆️🏄‍。<br>暂时叫这个方法叫 <code>mycall</code>，原理和 <code>call</code>一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.myCall = function (context) &#123;</span><br><span class="line">  context.fn = this</span><br><span class="line">  const args = [...arguments].slice(1)</span><br><span class="line">  const result = context.fn(args)</span><br><span class="line">  delete context.fn</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你不能理解每一行代码代表的意思，那么恭喜你，你和我一样笨，哈哈哈。<br>先笑一会儿。<br>那我们正式开始进入正题，先来一个小 demo:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const obj1 = &#123;</span><br><span class="line">  x: 1,</span><br><span class="line">  count: function () &#123;</span><br><span class="line">    return this.x</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj1.count())</span><br></pre></td></tr></table></figure>
+<p>👆这个 demo 的输出是 1，如果你答错了，那么你可能是没睡醒，多看看就明白了。</p>
+<p>我们继续，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const obj1 = &#123;</span><br><span class="line">  x: 1,</span><br><span class="line">  count: function () &#123;</span><br><span class="line">    return this.x</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj2 = &#123; x: 2 &#125;</span><br><span class="line"></span><br><span class="line">obj2.count = obj1.count</span><br><span class="line"></span><br><span class="line">console.log(obj2.count())</span><br></pre></td></tr></table></figure>
+<p>上面这个 demo 的输出应该为 2， 我重新声明了一个 <code>obj2</code>，然后在 <code>obj2</code> 中添加了一个新的属性，它的值就是 <code>obj1</code> 的 <code>count</code> 方法，所以上面那个 demo 和下面这个是一样的意思，但是不同的是上面的 demo 中的 <code>obj1</code> 和 <code>obj2</code> 中的 <code>count</code> 方法指向得的是同一个内存地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const obj1 = &#123;</span><br><span class="line">  x: 1,</span><br><span class="line">  count: function () &#123;</span><br><span class="line">    return this.x</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj2 = &#123; </span><br><span class="line">    x: 2,</span><br><span class="line">    count: function () &#123;</span><br><span class="line">        return this.x</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">console.log(obj2.count())</span><br></pre></td></tr></table></figure>
+<p>如果你都能理解的话，那么我们的主题，<code>如何手动实现一个 call 方法？</code>，就能理解三分之一了。</p>
+<p>我们先抛出一个完整的例子来，再挨个解析 <code>myCall</code> 方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.myCall = function (context) &#123;</span><br><span class="line">  context.fn = this</span><br><span class="line"></span><br><span class="line">  const args = [...arguments].slice(1)</span><br><span class="line"></span><br><span class="line">  const result = context.fn(args)</span><br><span class="line"></span><br><span class="line">  delete context.fn</span><br><span class="line"></span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  x: 1,</span><br><span class="line">  count: function () &#123;</span><br><span class="line">    return this.x</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj2 = &#123; x: 2 &#125;</span><br><span class="line"></span><br><span class="line">const newCount = obj1.count</span><br><span class="line"></span><br><span class="line">console.log(newCount.myCall(obj2))</span><br></pre></td></tr></table></figure>
+<p>根据我们学习到知识，这次还是输出 2 ，那么 <code>myCall</code> 中的 <code>this</code> 指向是什么呢，<code>context.fn</code> 又是什么意思呢.</p>
+<p>其实 <code>context.fn = this</code> 中的 this 指向的当前的 <code>count</code> 函数名，<code>context</code> 是我们传入的 <code>obj2</code> 对象。<br>所以这里的意思就是为 <code>obj2</code> 添加一个属性 fn，值为 <code>count</code> 函数，就跟我们之前的小 demo 一样。</p>
+<p>然后下一行的意思就是取得 <code>mycall</code> 后面的参数，再下一行就是将参数传入 count 函数并执行，最后返回执行结果。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>关于 this 指向，总有数不清的困扰，但是只要我们很多时候牢记一点，this 永远指向它最后调用的一个地方。</p>
+<p>如果还不明白为什么<code>context.fn = this</code> 中的 this 指向的当前的 <code>count</code> 函数名的话，可以看下面的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function justAEmptyFunc() &#123;&#125;</span><br><span class="line"></span><br><span class="line">Function.prototype.sayMe = function () &#123;</span><br><span class="line">  console.log(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">justAEmptyFunc.sayMe()</span><br></pre></td></tr></table></figure>
+<p>执行当前代码，console 打印出的就是当前的函数名： <code>justAEmptyFunc</code>，因为函数本质也是一个对象（object）.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Function.__proto__.__proto__ === Object.prototype</span><br></pre></td></tr></table></figure>
+<p>上面的代码返回 true。</p>
+<p>其次，我们不妨再试试 <code>mycall</code>，（执行环境：nodejs）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">global.x = 2</span><br><span class="line"></span><br><span class="line">Function.prototype.myCall = function (context) &#123;</span><br><span class="line">  context.fn = this</span><br><span class="line"></span><br><span class="line">  const args = [...arguments].slice(1)</span><br><span class="line"></span><br><span class="line">  console.log(this(args))</span><br><span class="line"></span><br><span class="line">  const result = context.fn(args)</span><br><span class="line"></span><br><span class="line">  delete context.fn</span><br><span class="line"></span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  x: 1,</span><br><span class="line">  count: function () &#123;</span><br><span class="line">    return this.x</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj2 = &#123; x: 2 &#125;</span><br><span class="line"></span><br><span class="line">const newCount = obj1.count</span><br><span class="line"></span><br><span class="line">console.log(newCount.myCall(obj2))</span><br></pre></td></tr></table></figure>
+<p>执行以上代码时，你会发现会额外打印出一个 <code>x</code> 值，这个值就是全局变量 <code>2</code>，代码在 <code>console.log(this(args))</code>这句，因为就像我们上面说的 this 值为 count 函数，而单纯执行 count 函数时没有执行环境，默认执行环境就是全局(nodejs 环境下为 global，浏览器下为 window)。</p>
+<p>同理，如果想实现 <code>apply</code>，<code>bind</code> 等方法也是一个原理，只是 bind 不返回执行结果，只返回执行环境，所以需要返回一个改变 this 过后的执行函数环境。</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        
+        <nav class="post-nav"><a class="prev" href="/2019/11/19/为什么-react-中-p-元素不能嵌套-div-元素/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">为什么 react 中 p 元素不能嵌套 div 元素</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/07/04/hexo博客主题noise如何配置gitment评论功能/">
+        <span class="next-text nav-default">hexo博客主题noise如何配置gitment评论功能</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/07/31/深入理解call方法的实现原理/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

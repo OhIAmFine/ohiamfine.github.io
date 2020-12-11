@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="关于移动端像素的思考"><meta name="keywords" content="css, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/04/10/关于移动端像素的思考/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>关于移动端像素的思考 - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">关于移动端像素的思考
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-10
+        </span><span class="post-visits" data-url="/2019/04/10/关于移动端像素的思考/" data-title="关于移动端像素的思考">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一个问题："><span class="toc-text">第一个问题：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二个问题："><span class="toc-text">第二个问题：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始倒腾"><span class="toc-text">开始倒腾</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一个问题的解决："><span class="toc-text">第一个问题的解决：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二个问题的解决："><span class="toc-text">第二个问题的解决：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结论-1"><span class="toc-text">结论</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><p>今天在学习 RN（react native）时，突然想到一个关于像素的例子，正好以前也了解过像素密度等知识，突然和 RN 的例子结合起来时又想不通具体的场景了，所以决定总结一下相关的知识点。</p>
+<a id="more"></a>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><h3 id="第一个问题："><a href="#第一个问题：" class="headerlink" title="第一个问题："></a>第一个问题：</h3><p>在学习这个例子的时候，发现官网上讲的组件的宽高默认是绝对的 “px”，考虑到当代的布局都是使用 <code>rem em</code> 等单位定义宽高，这样直接用 <code>px</code> 会不会造成不同设备显示的大小也不同呢？这里的编码时的像素和我们日常生活中的手机像素是一样的吗？</p>
+<p>原文描述如下：</p>
+<blockquote>
+<p>The simplest way to set the dimensions of a component is by adding a fixed width and height to style. All dimensions in React Native are unitless, and represent density-independent pixels.</p>
+</blockquote>
+<p>截图如下：<br><img src="/img/Snipaste_2019-04-10_15-55-34.png" alt></p>
+<h3 id="第二个问题："><a href="#第二个问题：" class="headerlink" title="第二个问题："></a>第二个问题：</h3><p>我打开一个模拟器（iphone 6s Plus），然后在 VS Code 下定义和 demo 一样的 <code>150 x 150</code>，最后在电脑上比了一下，发现不是150，大概只有 <code>122 x 122</code>(误差在3之间)，很神奇，有点不明白为什么。</p>
+<h2 id="开始倒腾"><a href="#开始倒腾" class="headerlink" title="开始倒腾"></a>开始倒腾</h2><h3 id="第一个问题的解决："><a href="#第一个问题的解决：" class="headerlink" title="第一个问题的解决："></a>第一个问题的解决：</h3><p>然后我查阅了一下相关的资料，发现我们写代码时所说的分辨率和平时我们所说的 iphone 的分辨率是不同的，比如我当前在 mac pro 上打开的 iphone 6 plus模拟器，当我将宽度定义为 <code>414</code> 时，刚好将屏幕撑满，和我以前所知的iphone 6 plus分辨率为 <code>1080 x 1920</code> 不一样，然后我打开 Chrome devtool 时发现，真实的像素为 <code>414 x 736</code><br><img src="/img/Snipaste_2019-04-10_16-10-39.png" alt><br><img src="/img/Snipaste_2019-04-10_16-14-57.png" alt></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>原来是 iOS 提供了三种不同的分辨率，我们实际编码设计时用到的和日常所说的分辨率是不一样的，我们实际设计时所用到的应该叫设计分辨率，也可以叫设计分辨点（point）。<br>所以每个设备的设计宽度其实都是不一样的，单纯写死一个宽度可能会为后期设计埋雷。<br><img src="/img/Snipaste_2019-04-10_16-18-46.png" alt><br><img src="/img/iPhone-Resolutions.png" alt></p>
+<h3 id="第二个问题的解决："><a href="#第二个问题的解决：" class="headerlink" title="第二个问题的解决："></a>第二个问题的解决：</h3><p>通过反复对比思考，发现原来这是模拟器的一个坑，他不会完全显示它的内容的大小，而 chrome 的 dev tool 就可以完全显示，我们通过对比两张图你就明白了。<br>以下是 chrome 的 dev tool 下的 iphone 6 plus 内容的宽显示，你会发现两个地方的宽都为 <code>414px</code><br><img src="/img/20190410171756.jpg" alt><br>而对比模拟器的宽：<br><img src="/img/20190410171951.jpg" alt></p>
+<h3 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h3><p>原来是模拟器展示的不一样，我还以为是什么神奇的兼容性呢，有点坑。</p>
+<p>— <strong><em> 纸上得来终觉浅，绝知此事要躬行 </em></strong></p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/css/">css</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2019/04/12/获取二叉树的最大深度/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">获取二叉树的最大深度</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/03/24/docker-run-命令详解/">
+        <span class="next-text nav-default">docker run 命令详解</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/04/10/关于移动端像素的思考/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

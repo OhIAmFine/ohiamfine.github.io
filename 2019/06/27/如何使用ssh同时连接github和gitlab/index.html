@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="如何使用ssh同时连接github和gitlab"><meta name="keywords" content="ssh, Hurry | Coding"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="alternate" href="/default" title="Hurry | Coding"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0">
+<link rel="canonical" href="http://yoursite.com/2019/06/27/如何使用ssh同时连接github和gitlab/">
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css"><link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0">
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz",
+      appKey: "xcT17LOqiDKrNWtTDMf0CSAC"
+    });
+  </script><script>
+  window.config = {"leancloud":{"app_id":"cqwmtLNlhYrQm3ONroI1ycOb-gzGzoHsz","app_key":"xcT17LOqiDKrNWtTDMf0CSAC"},"toc":true,"fancybox":true,"pjax":true,"latex":false};
+</script>
+
+    <title>如何使用ssh同时连接github和gitlab - Hurry | Coding</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Hurry | Coding</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">首页
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">归档
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Hurry | Coding</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            首页
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            归档
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            标签
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            关于
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">如何使用ssh同时连接github和gitlab
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-06-27
+        </span><span class="post-visits" data-url="/2019/06/27/如何使用ssh同时连接github和gitlab/" data-title="如何使用ssh同时连接github和gitlab">
+          阅读次数 0
+        </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何部署"><span class="toc-text">如何部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步"><span class="toc-text">第一步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二步"><span class="toc-text">第二步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三步"><span class="toc-text">第三步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上传-ssh-key"><span class="toc-text">上传 ssh key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第五步"><span class="toc-text">第五步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后"><span class="toc-text">最后</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司发的电脑被我搞坏了，备份巨慢无比，无奈之下拿到新电脑只好重新装一次环境，装完环境之后又遇到了许多问题，重温解决方案，避免下次又疯狂查文档，浪费时间。由于自己需要在 github 中开发一些自己的东西，而公司自己又搭建了一套 gitlab 代码仓库，为避免混乱，如何使用 git 可以向两个地址推送代码而不妨碍各自的开发就成为了我们需要解决的问题。</p>
+<a id="more"></a>
+<p>先看看 ssh 的原理，传送门：<br><a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" target="_blank" rel="noopener">SSH原理简介</a></p>
+<h3 id="如何部署"><a href="#如何部署" class="headerlink" title="如何部署"></a>如何部署</h3><p>前提： github 和 gitlab 账号各自拥有不同的邮箱，github 账号中的邮箱用来存放自己的代码（当然根据劳动法，严格意义上利用公司的设备开发的成果归公司所有，有兴趣的可以自己 Google），gitlab 账号中的邮箱用来存放公司的日常开发代码。如果两个地址都是同一个邮箱地址，那就不用看这篇文章了。<br>ssh 通过 git 设置的邮箱来确认向不同的代码仓库提交代码，所以我们要在 github 和 gitlab 上同时推送代码就必须在配置的时候告诉 git，如何使用不同的邮箱来进行 ssh 连接。          </p>
+<p>这里主要分为 5 步完成。</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>需要确定默认主账号，推荐使用公司邮箱，因为主要还是用公司邮箱推送代码到 gitlab 仓库进行开发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 全局默认配置</span><br><span class="line">git config --global user.name &apos;tuling&apos; &amp;&amp; git config --global user.email &apos;tulingCompany@company.com&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>生成公钥和私钥，主 gitlab 账号直接使用常见的 <code>ssh-keygen -t rsa -C</code>方法, 副账号需要指定生成的文件名。<br>默认的ssh目录为<code>~/.ssh</code>下，如有不同则下面的目录需要手动改正。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 生成默认 gitlab 主账户，公司日常开发用</span><br><span class="line">ssh-keygen -t rsa -C &quot;tulingCompany@company.com&quot;</span><br><span class="line"></span><br><span class="line"># 生成副账号 github 的公钥、密钥，同时指定文件名</span><br><span class="line">ssh-keygen -t rsa -f ~/.ssh/id_rsa.github -C &quot;tulingPeronal@personal.com&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>对于如何让 github 和 gitlab 识别不同的公钥、密钥，下面需要进行最重要的一步，增加配置文件（config），用于代码仓库来判断该使用何种的公钥、密钥进行比对。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 进入 ssh 配置目录</span><br><span class="line">cd ~/.ssh</span><br><span class="line"></span><br><span class="line"># 新建 config 文件并配置 config 文件</span><br><span class="line">touch config</span><br></pre></td></tr></table></figure>
+<p>新建好 config 配置文件后，添加如下内容到 config 配置文件中（副账号为 github），</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Host *github.com</span><br><span class="line">     IdentityFile ~/.ssh/id_rsa.github</span><br><span class="line">     User tulingPeronal</span><br></pre></td></tr></table></figure>
+<h3 id="上传-ssh-key"><a href="#上传-ssh-key" class="headerlink" title="上传 ssh key"></a>上传 ssh key</h3><p>登陆各自的 github 和 gitlab账户<br>在各自的 github 和 gitlab 的账号设置中添加 ssh key<br>步骤为：<br>登陆成功 =&gt; 点击自己的头像 =&gt; setting =&gt; Add SSH Key</p>
+<p>主账号 gitlab 中的 ssh key 粘贴 <code>id_rsa.pub</code> 文件中的内容</p>
+<p>副账号 github 中的 ssh key 粘贴 <code>id_rsa.github.pub</code> 文件中的内容</p>
+<h3 id="第五步"><a href="#第五步" class="headerlink" title="第五步"></a>第五步</h3><p>配置成功后可以重启一下 terminal。</p>
+<p>测试：</p>
+<p>采用 SSH -T 测试不同账号的连接情况<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 测试连接 github</span><br><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 测试连接 gitlab</span><br><span class="line">ssh -T git@gitlab.com</span><br></pre></td></tr></table></figure>
+<p>如果出现相对应的账号名称，则说明测试成功。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>每当我们重新使用 <code>git init</code> 初始化项目或者 <code>git clone</code> 拉取远程仓库代码时，默认使用的配置为 “第一步” 使用的 git 全局配置，所以当不需要使用那个全局配置时，比如我们需要推送的目录为 github 仓库时，还需要手动设置，要不然推送到远程仓库的用户为全局配置的用户，github 仓库的 commit 提交历史头像就是灰色的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 进入当前拉取或初始化的 github 仓库</span><br><span class="line">cd $&#123;github-project&#125;</span><br><span class="line"># 设置本地仓库的用户名和邮箱</span><br><span class="line">git config user.name &quot;tuling&quot; &amp;&amp; git config user.email &quot;tuling@personal.com&quot;</span><br></pre></td></tr></table></figure>
+<p>如果已经推送到 github 仓库，但没有设置正确的 github 用户，我们还有备用方案：可以使用脚本在本地修改 author，</p>
+<p><a href="https://gist.github.com/OhIAmFine/14de458c67f846e043db9ada65b01661" target="_blank" rel="noopener">修改author的脚本</a></p>
+<p>复制脚本到当前 github 仓库的 terminal 中，修改对应变量值， 按下 enter 执行。</p>
+<p>推送到对应远程分支<br><code>git push orign #{branch} -f</code></p>
+<p>查看远程的 commit 历史，你会发现头像已经变回来了，你的 profile 也多了一个提交历史。<br>同理，如果想多添加其他的代码仓库也是一样的原理。<br>good.</p>
+
+      </div>
+      
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ssh/">ssh</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2019/07/02/andorid键盘弹起遮挡input表单问题的临时解决/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">andorid键盘弹起影响 fixed 布局的方案探索</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    <a class="next" href="/2019/06/20/SPA项目高度百分之百问题/">
+        <span class="next-text nav-default">SPA项目高度百分之百问题</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ahonn" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2015 - 2020<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Sam Chen</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><!-- Gitment Comments -->
+<div id="Gitment"></div>
+<script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
+<script type="text/javascript">
+(function(){
+    const gitment = new Gitment({
+      id: '2019/06/27/如何使用ssh同时连接github和gitlab/',
+      owner: 'OhIAmFine',
+      repo: 'ohiamfine.github.io',
+      oauth: {
+        client_id: 'aa7070f51a1c75e97ae9',
+        client_secret: '715f2abd5963d2e5032fbd36df0360e2f368e77e',
+      },
+    });
+    var comments = document.getElementById('comments');
+    comments.appendChild(gitment.render());
+})()
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
